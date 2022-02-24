@@ -1,7 +1,7 @@
 
 /***********************************************************************************
-  ClickableAllocator
-  by Scott Kildall
+  Clickables
+  by Hannah Gabany
   
   Start your localhost before running this, otherwise no PNGs will display
 
@@ -18,6 +18,7 @@ var clickablesManager;
 
 // an array of clickable objects
 var clickables;
+var gDebugMode = false;
 
 // indexes into the array (constants)
 const redIndex = 0;
@@ -73,12 +74,28 @@ function setup() {
 // Just draw the button
 function draw() {
   background(128);
+  
+  if(gDebugMode == true ){
+    drawDebugInfo();
+  }
 
   // draw "balloon"
   drawBalloon();
 
   // draw the p5.clickables
   clickablesManager.draw();
+}
+
+function keyTyped(){
+  if(key === ' '){
+    gDebugMode = !gDebugMode;
+  }
+}
+
+//debug function
+function drawDebugInfo(){
+  fill(225);
+  text("X: " + mouseX + "  Y:" + mouseY, 20, height - 20);
 }
 
 function drawBalloon() {
