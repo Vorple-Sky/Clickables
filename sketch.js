@@ -20,7 +20,7 @@ var clickablesManager;
 var clickables;
 var gDebugMode = false;
 
-// indexes into the array (constants)
+// indexes into the array (constants) CHANGE to be png for conform and deconform
 const redIndex = 0;
 const greenIndex = 1;
 const yellowIndex = 2;
@@ -98,12 +98,13 @@ function drawDebugInfo(){
   text("X: " + mouseX + "  Y:" + mouseY, 20, height - 20);
 }
 
+//change to draw image for pngs
 function drawBalloon() {
   push();
   ellipseMode(CENTER);
   noStroke();
   fill(balloonColor);
-  circle(250,height/2, ellipseDiameter);
+  circle(677,height/2, ellipseDiameter);
   pop();
 }
 
