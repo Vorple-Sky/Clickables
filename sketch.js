@@ -19,6 +19,7 @@ var clickablesManager;
 // an array of clickable objects
 var clickables;
 var gDebugMode = false;
+var clothingImg;
 
 // indexes into the array (constants) CHANGE to be png for conform and deconform
 const redIndex = 0;
@@ -26,6 +27,8 @@ const greenIndex = 1;
 const yellowIndex = 2;
 const inflateIndex = 3;
 const deflateIndex = 4;
+const LargefitIndex = 5;
+const SmallfitIndex = 6;
 
 // constants for the balloon
 const startEllipseDiameter = 30;
@@ -79,11 +82,24 @@ function draw() {
     drawDebugInfo();
   }
 
+  drawImage();
+
   // draw "balloon"
   drawBalloon();
 
   // draw the p5.clickables
   clickablesManager.draw();
+}
+
+function setImage(imageFilename) {
+  clothingImg = loadImage(imageFilename);
+} 
+
+function drawImage() {
+  if( clothingImg !== undefined ) {
+    image(clothingImg, width/2, height/2);
+    clothingImg.resize(750, 750);
+  }  
 }
 
 function keyTyped(){

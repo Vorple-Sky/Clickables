@@ -1,6 +1,6 @@
 ID,Name,PNGFilename,Text,x,y,visible
-0,Red,assets/redBalloon.png,,520,500,yes
+0,Red,assets/Shrink.png,,520,500,yes
 1,Green,assets/greenBalloon.png,,640,500,yes
-2,Yellow,assets/yellowBalloon.png,,760,500,yes
+2,Yellow,assets/Grow.png,,760,500,yes
 3,Inflate,,Inflate,520,50,yes
 4,Deflate,,Deflate,760,50,yes
