@@ -1,5 +1,6 @@
 ID,Name,PNGFilename,Text,x,y,visible
-0,Shrink,assets/Shrink.png,,520,500,yes
+0,Shrink,assets/Shrink.png,,537,500,yes
 1,Grow,assets/Grow.png,,760,500,yes
 2,About,,About,20,50,yes
 3,Why,,Why,20,110,yes
+4,Who,,Who,20,170,yes
