@@ -2,9 +2,6 @@
 /***********************************************************************************
   Clickables
   by Hannah Gabany
-  
-  Start your localhost before running this, otherwise no PNGs will display
-
 
 ***********************************************************************************/
 
