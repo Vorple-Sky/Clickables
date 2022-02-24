@@ -22,13 +22,12 @@ var gDebugMode = false;
 var clothingImg;
 
 // indexes into the array (constants) CHANGE to be png for conform and deconform
-const redIndex = 0;
-const greenIndex = 1;
-const yellowIndex = 2;
-const inflateIndex = 3;
-const deflateIndex = 4;
-const LargefitIndex = 5;
-const SmallfitIndex = 6;
+const shrinkIndex = 0;
+const growIndex = 1;
+const aboutIndex = 2;
+const whyIndex = 3;
+const LargefitIndex = 4;
+const SmallfitIndex = 5;
 
 // constants for the balloon
 const startEllipseDiameter = 30;
@@ -38,11 +37,14 @@ const inflateAmount = 5;
 const maxDiameter = 200;
 const minDeflateDiameter = 5;
 
-// variables for the ballon
-var ellipseDiameter = startEllipseDiameter;
 
 // pop soun
 var popSound;
+
+let Largefit;
+let Smallfit;
+let current_img;
+let current_txt;
 
 // ALWAYS allocate the ClickableManager in the preload() function
 // if you get an error here, it is likely the .csv file that is not the
@@ -55,6 +57,9 @@ function preload(){
 // the class has been allocated in the preload() function.
 function setup() {
   createCanvas(1280,600);
+  Largefit = loadImage('assets/Largefit.png');
+  Smallfit = loadImage('assets/Smallfit.png');
+  current_img = Largefit;
 
   // load the pop sound
   soundFormats('mp3');
@@ -67,9 +72,6 @@ function setup() {
   // that are not in the array 
   setupClickables(); 
 
-  // start with a red balloon
-  newBalloon(redIndex);
-
   // output to the message window
   console.log(clickables);
 }
@@ -77,30 +79,20 @@ function setup() {
 // Just draw the button
 function draw() {
   background(128);
+  image(current_img,460,60,460,460);
+  fill(0);
+  textFont('Helvetica', 13);
+  text(current_txt,170,50,300,500);
+  
   
   if(gDebugMode == true ){
     drawDebugInfo();
   }
 
-  drawImage();
-
-  // draw "balloon"
-  drawBalloon();
-
   // draw the p5.clickables
   clickablesManager.draw();
 }
 
-function setImage(imageFilename) {
-  clothingImg = loadImage(imageFilename);
-} 
-
-function drawImage() {
-  if( clothingImg !== undefined ) {
-    image(clothingImg, width/2, height/2);
-    clothingImg.resize(750, 750);
-  }  
-}
 
 function keyTyped(){
   if(key === ' '){
@@ -114,22 +106,13 @@ function drawDebugInfo(){
   text("X: " + mouseX + "  Y:" + mouseY, 20, height - 20);
 }
 
-//change to draw image for pngs
-function drawBalloon() {
-  push();
-  ellipseMode(CENTER);
-  noStroke();
-  fill(balloonColor);
-  circle(677,height/2, ellipseDiameter);
-  pop();
-}
 
 // change individual fields of the clickables
 function setupClickables() {
   // set the pop, inflate and deflate to be false, we will change this after
   // first balloon gets pressed
-  clickables[inflateIndex].visible = false;
-  clickables[deflateIndex].visible = false; 
+  clickables[shrinkIndex].visible = true;
+  clickables[growIndex].visible = true; 
 
   // These are the CALLBACK functions. Right now, we do the SAME function for all of the clickables
   for( let i = 0; i < clickables.length; i++ ) {
@@ -142,21 +125,26 @@ function setupClickables() {
 //--- CLICKABLE CALLBACK FUNCTIONS ----
 
 clickableButtonPressed = function () {
-// NEW BALLOON
-  if( this.id === redIndex || this.id === greenIndex || this.id === yellowIndex ) {
-    newBalloon(this.id);
+// Change size of clothing
+  if( this.id === growIndex ) {
+    current_img = Largefit;
+    current_txt = ' ';
+  }
+  else if(this.id === shrinkIndex){
+    current_img = Smallfit;
+    current_txt = ' ';
   }
 
 // INFLATE OR DEFLATE
-  else if( this.id === deflateIndex ) {
-    ellipseDiameter -= deflateAmount;
+  else if( this.id === whyIndex ) {
+    current_txt = 'Why because this is a cool idea';
+
+    /*ellipseDiameter -= deflateAmount;
     ellipseDiameter = max(minDeflateDiameter,ellipseDiameter);   // prevents < 0
+    */
   }
-  else if( this.id === inflateIndex ) {
-    ellipseDiameter += inflateAmount;
-    if( ellipseDiameter > maxDiameter ) {
-      popBalloon();
-    }
+  else if( this.id === aboutIndex ) {
+    current_txt = 'Clothes that when put on would have a section bracelet or button, upon pressing they would contract, conform, resize or adjust to the user and surroundings. Using Conforming/adjusting clothes would not only eliminate the need to buy multiple sizes but also multiple styles. Once someone buys one piece it can last them a lifetime, as you grow so does your clothes! With the ability to adjust texture and style you can have a long sleeve change to a jacket at just a press of a button or jeans to sweatpants. By having one piece to meet all of your needs we can practically eliminate the fast fashion industry along with the enormous amount of clothing waste created by mankind. The benefits of such a technology would be the environmental aspect, and the biggest group that would be helped would be those in poverty. No longer needing new clothes every year parents or children simply need to buy one item of clothing and it will grow and change at the same rate they do. The only downside for this technology would be the price point, and job loss. Hopefully in the future when this becomes a possibility, the price will be low and accessible to everyone. With the ability to have a single item of clothing, comes the loss of jobs for those who work in the fashion industry. However, with a new invention comes new jobs.';
   }
 }
 
@@ -170,7 +158,7 @@ clickableButtonHover = function () {
 // color a light gray if off
 clickableButtonOnOutside = function () {
   // Change colors based on the id #
-  if( this.id === inflateIndex || this.id === deflateIndex ) {
+  if( this.id === aboutIndex || this.id === whyIndex ) {
     this.color = "#FFFFFF";
   }
   else {
@@ -184,7 +172,7 @@ clickableButtonOnOutside = function () {
 
 // when a new balloon is made, we show pop and inflate and deflate button,
 // change fill color and reset ellipse diamter
-function newBalloon(idNum) {
+/*function newBalloon(idNum) {
   clickables[inflateIndex].visible = true;
   clickables[deflateIndex].visible = true; 
   ellipseDiameter = startEllipseDiameter;
@@ -210,5 +198,6 @@ function popBalloon() {
   clickables[inflateIndex].visible = false;
   clickables[deflateIndex].visible = false; 
 }
+*/
 
 
